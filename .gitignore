@@ -1,1 +1,3 @@
 secret/
+backend/secret.*
+backend/.cache-*
