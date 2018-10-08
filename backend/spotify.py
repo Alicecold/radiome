@@ -1,7 +1,12 @@
 import spotipy
 import spotipy.util as util
+import spotipy.oauth2 as oauth2
 import sys
 import secret as app
+
+# Hakk to avoid AttributeError
+import os
+import json
 
 token = ''
 user = ''
@@ -11,21 +16,24 @@ def login(this):
         this.user = sys.argv[1]
     else:
         this.user = 'alicecold'
-    this.token = util.prompt_for_user_token(this.user,'user-read-currently-playing',client_id=app.CLIENT_ID,client_secret=app.CLIENT_SECRET,redirect_uri=app.REDIRECT_URL)
+    scope = 'user-read-currently-playing'
+    this.token = util.prompt_for_user_token(this.user, scope,client_id=app.S_CLIENT_ID,client_secret=app.S_CLIENT_SECRET,redirect_uri=app.S_REDIRECT_URL)
 
 def get_current_playing(this):
     if this.token:
         sp = spotipy.Spotify(auth=token)
-        sp.user(this.user)
-        current = sp.currently_playing(market=None)['item']
-        name = current['name']
-        album = current['album']['name']
-        artists = current['artists']
-        artist = artists[0]['name']
-        for artistIndex in range (1, len(artists)):
-            artist += ', ' + artists[artistIndex]['name']
-        print 'Currently Playing: \n', name, '-', artist, '(' + album + ')'
-        return 'Currently Playing: \n' + name + ' - ' + artist + ' (' + album + ')'
+        current = sp.currently_playing(market=None)
+        if current:
+            song = sp.currently_playing(market=None)['item']
+            name = song['name']
+            album = song['album']['name']
+            artists = song['artists']
+            artist = artists[0]['name']
+            for artistIndex in range (1, len(artists)):
+                artist += ', ' + artists[artistIndex]['name']
+            return '' + name + ' - ' + artist + ' (' + album + ')'
+        else:
+            return  "currently not playing anything"
     else:
         print "Can't get token for", this.user
         return "unable to accept user"
