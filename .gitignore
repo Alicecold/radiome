@@ -3,3 +3,4 @@ backend/secret.*
 backend/.cache-*
 backend/weplay-*
 backend/*.pyc
+node_modules/
