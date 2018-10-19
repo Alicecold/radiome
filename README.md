@@ -45,7 +45,7 @@ currently using lite-server. That might change in the future
 # TODO
 
 ## Backend
-* Removing spotipy dependency (since it's handling of oauth makes it a bit... clonky)
+* Removing spotipy dependency 
 * Go from python2 -> python3
 
 ## Frontend
