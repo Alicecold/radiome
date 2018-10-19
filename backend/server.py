@@ -24,13 +24,14 @@ class handle(BaseHTTPRequestHandler):
         if self.path == '/' :
             spotify.login(spotify)
             self.user_dbs_ref.set({spotify.user: {
-                'now': spotify.get_current_playing(spotify).encode('utf-8')
+                'now': spotify.get_current_playing(spotify).encode('utf-8'),
+                'broadcasting': True
             }})
             self.wfile.write(json.dumps({"path": "/" + spotify.user}))
         else:
-            now = self.user_dbs_ref.child(self.path[1:] + '/now').get()
+            now = self.user_dbs_ref.child(self.path[1:]).get()
             self.wfile.write(json.dumps({"response": now}))
-            print now
+            print self.path
         return
 
 try:
