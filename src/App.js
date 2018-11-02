@@ -9,14 +9,17 @@ class App extends Component {
       <Router>
       <div className="App">
       
-      
-      <Route path="/:user" component={Show} />
+      <Route path="/login/callback" component={Callback} />
+      <Route path="/user/:user" component={Show} />
         
       </div>
       </Router>
     );
   }
 }
+const Show = ({ match }) => (
+  <User username={match.params.user}/>
+);
 
 function User(props) {
   return <div><div className="NavBar">
@@ -26,12 +29,41 @@ function User(props) {
   </div>
   <header className="App-header"><Body user={props.username}/></header></div>
   
-  
 }
 
-const Show = ({ match }) => (
-  <User username={match.params.user}/>
-);
+
+class Callback extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      error: null,
+      isLoaded: false
+    };
+  }
+
+  updateInput(key, value) {
+    // update react state
+    this.setState({ [key]: value });
+  
+    // update localStorage
+    localStorage.setItem(key, value);
+  };
+
+  componentDidMount() {
+    this.updateInput('hej', 'value')
+  }
+
+  render() {
+    const { error, isLoaded } = this.state;
+    if (error) {
+      return <div>Error: {error.message}</div>;
+    } else if (!isLoaded) {
+      return <div>Loading...</div>;
+    } else {
+      return <div>Done!</div>;
+    }
+  }
+}
 
 class Body extends React.Component {
   constructor(props) {
