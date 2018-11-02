@@ -1,3 +1,5 @@
+from __future__ import print_function
+from builtins import range
 import spotipy
 import spotipy.util as util
 import spotipy.oauth2 as oauth2
@@ -12,10 +14,12 @@ token = ''
 user = ''
 
 def login(this):
+    print(this.user)
     if len(sys.argv) > 1:
         this.user = sys.argv[1]
     else:
         this.user = 'alicecold'
+    print(this.user)
     scope = 'user-read-currently-playing'
     this.token = util.prompt_for_user_token(this.user, scope,client_id=app.S_CLIENT_ID,client_secret=app.S_CLIENT_SECRET,redirect_uri=app.S_REDIRECT_URL)
 
@@ -35,5 +39,5 @@ def get_current_playing(this):
         else:
             return  "currently not playing anything"
     else:
-        print "Can't get token for", this.user
+        print("Can't get token for", this.user)
         return "unable to accept user"

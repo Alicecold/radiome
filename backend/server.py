@@ -1,5 +1,8 @@
 #!/usr/bin/python
-from BaseHTTPServer import BaseHTTPRequestHandler,HTTPServer
+from __future__ import print_function
+from future import standard_library
+standard_library.install_aliases()
+from http.server import BaseHTTPRequestHandler,HTTPServer
 import json
 import spotify
 import secret
@@ -31,15 +34,15 @@ class handle(BaseHTTPRequestHandler):
         else:
             now = self.user_dbs_ref.child(self.path[1:]).get()
             self.wfile.write(json.dumps({"response": now}))
-            print self.path
+            print(self.path)
         return
 
 try:
 	server = HTTPServer(('', PORT_NUMBER), handle)
-	print 'Started httpserver on port ' , PORT_NUMBER
+	print('Started httpserver on port ' , PORT_NUMBER)
 	
 	server.serve_forever()
 
 except KeyboardInterrupt:
-	print 'shutting down the web server'
+	print('shutting down the web server')
 	server.socket.close()
